@@ -12,7 +12,7 @@ PARTITION BY company, location, industry,total_laid_off, percentage_laid_off, `d
 FROM layoffs_copy
 ;
 
-#Because the following string is not executable, we have to create a new table to make row_num as an actual column
+#Because the following string is not executable, we have to create a new table to make row_num an actual column
 SELECT *
 FROM layoffs_copy
 WHERE company = 'Casper';
@@ -41,7 +41,7 @@ CREATE TABLE `layoffs_copy2` (
   `row_num` INT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-#This step is to insert these filtered(partitioned data) into new table with 'row_num'stand as an individual column
+#This step is to insert these filtered(partitioned data) into a new table with 'row_num'stand as an individual column
 INSERT INTO layoffs_copy2
 SELECT *,
 ROW_NUMBER() OVER(
@@ -71,7 +71,7 @@ FROM layoffs_copy2
 ORDER BY 1
 ;
 
-#Since we have a discrepency in company name related with Crypto, we use '%'sign to select company name started with 'Crypto'
+#Since we have a discrepancy in the company name related to Crypto, we use '%' sign to select the company name starting with 'Crypto'
 SELECT *
 FROM layoffs_copy2
 WHERE industry LIKE 'Crypto%'
@@ -117,19 +117,19 @@ FROM layoffs_copy2
 WHERE total_laid_off IS NULL
 AND percentage_laid_off IS NULL;
 
-#Four given industry may possibly get populated
+#Populating four given industires
 SELECT *
 FROM layoffs_copy2
 WHERE industry IS NULL
 OR industry = '';
 
-#we could use query to populate 'Travel' industry to another observation
+#we could use a query to populate the 'Travel' industry to another observation
 SELECT *
 FROM layoffs_copy2
 WHERE company = 'Airbnb';
 
 
-#After selfjoin, finding similiar roles which can popluate each other
+#After self join, finding similar roles which can populate each other
 SELECT t1.industry, t2.industry
 FROM layoffs_copy2 t1
 JOIN layoffs_copy2 t2
@@ -149,9 +149,9 @@ SET t1.industry = t2.industry #Adjust this part to
 WHERE t1.industry IS NULL
 AND t2.industry IS NOT NULL;
 
-#Remvoe unnecessary column
+#Remove unnecessary column
 
-#This query would select all the records which are missing two critical information as being an observation
+#his query would select all the records that are missing two critical pieces of information as being an observation
 SELECT *
 FROM layoffs_copy2
 WHERE total_laid_off IS NULL
