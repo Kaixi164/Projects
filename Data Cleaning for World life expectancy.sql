@@ -84,7 +84,7 @@ FROM worldlifeexpectancy
 #Where `life expectancy` = ''
 ;
 
-#Populate the blanked life expectancy by taking average from result of ahead and previous year.
+#Populate the blank life expectancy by taking the average from the results of ahead and previous year.
 SELECT Country,Year, `life expectancy`
 FROM worldlifeexpectancy;
 
